@@ -1,7 +1,22 @@
 #!/usr/bin/env python3
 
+from random import choice
+
+
 xlsx_inpath = "../data"
 json_outpath = "../data"
+
+mask = None
+
+class obfuscate:
+    def __init__(self, markov_dict, seed_c="s"):
+        self.md = markov_dict
+        self.last_c = seed_c
+    def __next__(self):
+        return self.next()
+    def next(self):
+        self.last_c = choice(self.md[self.last_c])
+        return self.last_c
 
 def main(inpath, outpath):
     import os
@@ -18,7 +33,6 @@ def make_markov():
     markov_dict = {}
     with open("words.txt") as file:
         for word in file.readlines():
-            print(word.strip())
             word = word.strip().lower()
             for i in range(0, len(word) - 1):
                 if not word[i] in markov_dict:
@@ -27,6 +41,10 @@ def make_markov():
                     markov_dict[word[i]].append(word[i+1])
     return markov_dict
 
-foo = make_markov()
+mask = obfuscate(make_markov())
+foo = ""
+for i in range(1,100):
+    foo = foo + mask.next()
+
 print(foo)
 # main(xlsx_inpath, json_outpath)
