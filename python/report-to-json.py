@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 
+import os
 import json
+import pandas as pd
 from random import choice
 
+obfuscate = True
 
 xlsx_inpath = "../data"
 json_outpath = "../data"
 
 mask = None
 
-class obfuscate:
+class obfuscater:
     def __init__(self, markov_dict, seed_c="s"):
         self.md = markov_dict
         self.last_c = seed_c
@@ -38,25 +41,20 @@ def field_list_to_array(s):
     return json.loads(fixed)
 
 def main(inpath, outpath):
-    import os
-    import pandas as pd
-
     for filename in os.listdir(inpath):
         if filename.endswith(".xlsx"):
             df = pd.read_excel('../data/' + filename)
             # convert field lists
             df["Cluster Members"] = df["Cluster Members"].apply(field_list_to_array)
 
-            # obfuscate
-            df["Cluster Name"] = df["Cluster Name"].apply(mask.obf_str)
-            df["Cluster Members"] = df["Cluster Members"].apply(mask.obf_arr)
+            if obfuscate:
+                df["Cluster Name"] = df["Cluster Name"].apply(mask.obf_str)
+                df["Cluster Members"] = df["Cluster Members"].apply(mask.obf_arr)
 
-            # end obfuscate
 
             df.to_json("../data/" + filename[0:-5] + ".json", orient="records", indent=2)
 
 def make_markov():
-    import os
     markov_dict = {}
     with open("words.txt") as file:
         for word in file.readlines():
@@ -68,5 +66,5 @@ def make_markov():
                     markov_dict[word[i]].append(word[i+1])
     return markov_dict
 
-mask = obfuscate(make_markov())
+mask = obfuscater(make_markov())
 main(xlsx_inpath, json_outpath)
