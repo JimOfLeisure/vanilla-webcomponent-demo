@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import json
 from random import choice
 
 
@@ -17,6 +18,28 @@ class obfuscate:
     def next(self):
         self.last_c = choice(self.md[self.last_c])
         return self.last_c
+    def obf_str(self, s):
+        outs = ""
+        for l in s:
+            if l.isalpha():
+                outs += mask.next()
+            else:
+                outs += l
+        return outs
+    def obf_arr(self, arr):
+        out_arr = []
+        for s in arr:
+            out_arr.append(self.obf_str(s))
+        return out_arr
+
+def foo(s):
+    print("\n**************\n")
+    print(s)
+    print(json.loads(s))
+
+# Unpacking the array in an Excel field
+def field_list_to_array(s):
+    return s.replace('\',', '",').replace(', \'', ', "').replace('[\'','["').replace('\']','"]')
 
 def main(inpath, outpath):
     import os
@@ -25,7 +48,17 @@ def main(inpath, outpath):
     for filename in os.listdir(inpath):
         if filename.endswith(".xlsx"):
             df = pd.read_excel('../data/' + filename)
-            print(df)
+            # obfuscate
+            df["Cluster Name"] = df["Cluster Name"].apply(mask.obf_str)
+            print(df["Cluster Members"][0][0:60])
+            # df["Cluster Members"][1] = '"'
+            # df["Cluster Members"][-2] = '"'            
+            # print(df["Cluster Members"][0].replace('\',', '",').replace(', \'', ', "').replace('[\'','["').replace('\']','"]')[0:60]);
+            # print(json.loads(df["Cluster Members"][0].replace('\',', '",').replace(', \'', ', "').replace('[\'','["').replace('\']','"]'))[0])
+            df["Cluster Members"] = df["Cluster Members"].apply(field_list_to_array)
+            df["Cluster Members"] = df["Cluster Members"].apply(json.loads)
+            df["Cluster Members"] = df["Cluster Members"].apply(mask.obf_arr)
+            print(df["Cluster Members"])
             df.to_json("../data/" + filename[0:-5] + ".json", orient="records", indent=2)
 
 def make_markov():
@@ -42,9 +75,4 @@ def make_markov():
     return markov_dict
 
 mask = obfuscate(make_markov())
-foo = ""
-for i in range(1,100):
-    foo = foo + mask.next()
-
-print(foo)
-# main(xlsx_inpath, json_outpath)
+main(xlsx_inpath, json_outpath)
