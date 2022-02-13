@@ -33,7 +33,7 @@ export class SeoClusterApp extends HTMLElement {
         this.innerHTML = "SEO Cluster App";
         this.seoClusterData.forEach(e => {
             let el = document.createElement('seo-cluster');
-            el.setAttribute('data-cluster-name', e["Cluster Name"]);
+            el.setData(e);
             this.appendChild(el);
         });
     }
@@ -42,7 +42,11 @@ export class SeoCluster extends HTMLElement {
     connectedCallback() {
         this.render();
     }
+    setData(data) {
+        this.data = data;
+        this.render();
+    }
     render() {
-        this.innerHTML = this.getAttribute('data-cluster-name');
+        this.innerHTML = this.data["Cluster Name"] + " " + this.data["Cluster Members"].length;
     }
 }
