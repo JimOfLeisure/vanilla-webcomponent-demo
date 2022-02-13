@@ -32,14 +32,10 @@ class obfuscate:
             out_arr.append(self.obf_str(s))
         return out_arr
 
-def foo(s):
-    print("\n**************\n")
-    print(s)
-    print(json.loads(s))
-
 # Unpacking the array in an Excel field
 def field_list_to_array(s):
-    return s.replace('\',', '",').replace(', \'', ', "').replace('[\'','["').replace('\']','"]')
+    fixed = s.replace('\',', '",').replace(', \'', ', "').replace('[\'','["').replace('\']','"]')
+    return json.loads(fixed)
 
 def main(inpath, outpath):
     import os
@@ -48,17 +44,15 @@ def main(inpath, outpath):
     for filename in os.listdir(inpath):
         if filename.endswith(".xlsx"):
             df = pd.read_excel('../data/' + filename)
+            # convert field lists
+            df["Cluster Members"] = df["Cluster Members"].apply(field_list_to_array)
+
             # obfuscate
             df["Cluster Name"] = df["Cluster Name"].apply(mask.obf_str)
-            print(df["Cluster Members"][0][0:60])
-            # df["Cluster Members"][1] = '"'
-            # df["Cluster Members"][-2] = '"'            
-            # print(df["Cluster Members"][0].replace('\',', '",').replace(', \'', ', "').replace('[\'','["').replace('\']','"]')[0:60]);
-            # print(json.loads(df["Cluster Members"][0].replace('\',', '",').replace(', \'', ', "').replace('[\'','["').replace('\']','"]'))[0])
-            df["Cluster Members"] = df["Cluster Members"].apply(field_list_to_array)
-            df["Cluster Members"] = df["Cluster Members"].apply(json.loads)
             df["Cluster Members"] = df["Cluster Members"].apply(mask.obf_arr)
-            print(df["Cluster Members"])
+
+            # end obfuscate
+
             df.to_json("../data/" + filename[0:-5] + ".json", orient="records", indent=2)
 
 def make_markov():
