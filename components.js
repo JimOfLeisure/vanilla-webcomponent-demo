@@ -1,6 +1,6 @@
 export class SeoClusterApp extends HTMLElement {
     connectedCallback() {
-        this.seoClusterData = {
+        this.seoClusterData = [{
               "Seed Keyword Distribution" : "",
               "Cluster Name" : "",
               "Cluster Size" : 0,
@@ -9,11 +9,12 @@ export class SeoClusterApp extends HTMLElement {
               "Competition Level" : "",
               "Volume Category" : "",
               "Number of Pages" : 0
-            };
+            }];
         let xhr = new XMLHttpRequest();
         xhr.onload = () => {
             if (xhr.status >= 200 && xhr.status < 300) {
-                this.seoClusterData = JSON.parse(xhr.responseText).data;
+                this.seoClusterData = JSON.parse(xhr.responseText);
+                console.log(xhr.responseText);
                 console.log(this.seoClusterData);
                 this.render();
             } else {
@@ -26,11 +27,15 @@ export class SeoClusterApp extends HTMLElement {
         }
                 xhr.open('GET', "/data/data.json");
         xhr.send();
-        
         this.render();
     }
     render() {
-        this.innerHTML = "SEO Cluster App"
+        this.innerHTML = "SEO Cluster App";
+        this.seoClusterData.forEach(e => {
+            let el = document.createElement('seo-cluster');
+            el.setAttribute('data-cluster-name', e["Cluster Name"]);
+            this.appendChild(el);
+        });
     }
 }
 export class SeoCluster extends HTMLElement {
@@ -38,8 +43,6 @@ export class SeoCluster extends HTMLElement {
         this.render();
     }
     render() {
-        this.innerHTML = "SEO Cluster"
+        this.innerHTML = this.getAttribute('data-cluster-name');
     }
 }
-
-// export { SeoClusterApp, SeoCluster }
