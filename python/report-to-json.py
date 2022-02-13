@@ -6,6 +6,8 @@ import pandas as pd
 from random import choice
 
 obfuscate = True
+# Number of spaces to indent JSON, or None
+indent = 2
 
 xlsx_inpath = "../data"
 json_outpath = "../data"
@@ -53,7 +55,7 @@ def main(inpath, outpath):
                 df["Cluster Tree"] = df["Cluster Tree"].apply(mask.obf_str)
 
 
-            df.to_json("../data/" + filename[0:-5] + ".json", orient="records", indent=2)
+            df.to_json("../data/" + filename[0:-5] + ".json", orient="records", indent=indent)
 
 def make_markov():
     markov_dict = {}
