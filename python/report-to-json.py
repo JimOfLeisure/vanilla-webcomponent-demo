@@ -50,6 +50,7 @@ def main(inpath, outpath):
             if obfuscate:
                 df["Cluster Name"] = df["Cluster Name"].apply(mask.obf_str)
                 df["Cluster Members"] = df["Cluster Members"].apply(mask.obf_arr)
+                df["Cluster Tree"] = df["Cluster Tree"].apply(mask.obf_str)
 
 
             df.to_json("../data/" + filename[0:-5] + ".json", orient="records", indent=2)
