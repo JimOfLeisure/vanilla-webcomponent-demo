@@ -1,4 +1,5 @@
 export default {
+    base: "/vanilla-webcomponent-demo/",
     build : {
         // For github pages, leave it readable
         minify: false,
