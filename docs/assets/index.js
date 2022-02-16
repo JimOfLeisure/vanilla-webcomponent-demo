@@ -1,3 +1,5 @@
+layout: none
+---
 const p = function polyfill() {
   const relList = document.createElement("link").relList;
   if (relList && relList.supports && relList.supports("modulepreload")) {
