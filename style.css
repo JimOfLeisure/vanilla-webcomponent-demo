@@ -16,11 +16,15 @@ seo-cluster {
   border: black 1px solid;
   border-radius: 1em;
   height: 10rem;
+  position: relative;
 }
 
 seo-cluster ul {
   list-style: none;
   padding: 0;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
 }
 
 seo-cluster ul > li {
