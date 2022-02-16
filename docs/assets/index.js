@@ -65,7 +65,7 @@ class SeoClusterApp extends HTMLElement {
     xhr.onerror = (e) => {
       console.log(e);
     };
-    xhr.open("GET", "../data/data.json");
+    xhr.open("GET", "./data/data.json");
     xhr.send();
     this.render();
   }
