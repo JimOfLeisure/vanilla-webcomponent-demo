@@ -1,18 +1,30 @@
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+seo-cluster-app * {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
-
 seo-cluster-app {
   display: block;
+  padding: 0;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 seo-cluster {
   display: block;
-  /* border-style: dotted; */
+  float: left;
+  width: 20%;
+  border: black 1px solid;
+  border-radius: 1em;
+  height: 10rem;
 }
 
+seo-cluster ul {
+  list-style: none;
+  padding: 0;
+}
+
+seo-cluster ul > li {
+  float: left;
+  width: 25%;
+  border: black 1px solid;
+}
