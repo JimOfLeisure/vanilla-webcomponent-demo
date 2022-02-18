@@ -31,9 +31,9 @@ export class SeoClusterApp extends HTMLElement {
     }
     render() {
         this.innerHTML = "";
-        const title = document.createElement("h2");
-        title.innerHTML = "SEO Cluster App";
-        this.appendChild(title);
+        // const title = document.createElement("h2");
+        // title.innerHTML = "SEO Cluster App";
+        // this.appendChild(title);
         this.seoClusterData.forEach(e => {
             const el = document.createElement('seo-cluster');
             el.setData(e);

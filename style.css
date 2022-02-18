@@ -4,15 +4,15 @@ seo-cluster-app * {
   -webkit-box-sizing: border-box;
 }
 seo-cluster-app {
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
   padding: 0;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 seo-cluster {
-  display: block;
-  float: left;
-  width: 20%;
+  width: 300px;
   border: black 1px solid;
   border-radius: 1em;
   height: 10rem;
